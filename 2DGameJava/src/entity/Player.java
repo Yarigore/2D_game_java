@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,8 +15,6 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
-
-    public int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -41,19 +40,29 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage(){
-        try {
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/tile_00851.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/player/tile_008512.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/tile_00852.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/tile_008522.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/tile_00853.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/tile_008532.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/player/tile_00854.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/player/tile_008542.png"));
-        }
-        catch (IOException e){
+
+        up1 = setUp("/player/tile_00851.png");
+        up2 = setUp("/player/tile_008512.png");
+        right1 = setUp("/player/tile_00852.png");
+        right2 = setUp("/player/tile_008522.png");
+        left1 = setUp("/player/tile_00853.png");
+        left2 = setUp("/player/tile_008532.png");
+        down1 = setUp("/player/tile_00854.png");
+        down2 = setUp("/player/tile_008542.png");
+    }
+
+    public BufferedImage setUp(String imagePath){
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
+        try{
+            image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+        }catch (IOException e){
             e.printStackTrace();
         }
+        return  image;
     }
 
     public void update(){
@@ -109,31 +118,6 @@ public class Player extends Entity {
     public void pickUpObject(int index){
         if(index != 999){
 
-            String objectName = gp.obj[index].name;
-
-            switch (objectName){
-                case "key":
-                    hasKey++;
-                    gp.obj[index] = null;
-                    gp.ui.showMessage("You got a key!");
-                    gp.playSE(2);
-                    break;
-                case "door":
-                    if(hasKey > 0){
-                        gp.obj[index] = null;
-                        hasKey--;
-                        gp.ui.showMessage("You opened the door!");
-                        gp.playSE(1);
-                    }
-                    else{
-                        gp.ui.showMessage("You need a key!");
-                    }
-                    break;
-                case "chest":
-                    gp.ui.gameFinished = true;
-                    gp.stopMusic();
-                    break;
-            }
         }
     }
 
@@ -176,7 +160,7 @@ public class Player extends Entity {
                 break;
         }
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, null);
 
     }
 }

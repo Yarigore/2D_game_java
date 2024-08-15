@@ -1,6 +1,7 @@
 package tile;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,72 +28,34 @@ public class TileManager {
 
     public void getTileImage(){
 
+        setUp(0, "/tiles/prado.png", false);
+        setUp(1, "/tiles/arena.png", false);
+        setUp(2, "/tiles/barro.png", false);
+        setUp(3, "/tiles/pradoFlor.png", false);
+        setUp(4, "/tiles/arenaLisa.png", false);
+        setUp(5, "/tiles/arenaRocas.png", false);
+        setUp(6, "/tiles/CasaA/puertaSimple.png", false);
+        setUp(7, "/tiles/CasaA/ladoDerechoCasa.png", true);
+        setUp(8, "/tiles/CasaA/ladoCentralCasa.png", true);
+        setUp(9, "/tiles/CasaA/ladoIzquierdoCasa.png", true);
+        setUp(10, "/tiles/CasaA/tejaCasa.png", true);
+        setUp(11, "/tiles/CasaA/tejadoAbajoDerecho.png", true);
+        setUp(12, "/tiles/CasaA/tejadoAbajoCentral.png", true);
+        setUp(13, "/tiles/CasaA/tejadoAbajoIzquierda.png", true);
+        setUp(14, "/tiles/CasaA/chimenea.png", true);
+        setUp(15, "/tiles/CasaA/tejadoArribaDerecho.png", true);
+        setUp(16, "/tiles/CasaA/tejadoArribaCentral.png", true);
+        setUp(17, "/tiles/CasaA/tejadoArribaIzquierdo.png", true);
+    }
+
+    public void setUp(int index, String imagePath, boolean collision){
+        UtilityTool uTool = new UtilityTool();
+
         try{
-
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/prado.png"));
-
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/arena.png"));
-
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/barro.png"));
-
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/pradoFlor.png"));
-
-            tile[4] = new Tile();
-            tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/arenaLisa.png"));
-
-            tile[5] = new Tile();
-            tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/arenaRocas.png"));
-
-            tile[6] = new Tile();
-            tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/puertaSimple.png"));
-
-            tile[7] = new Tile();
-            tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/ladoDerechoCasa.png"));
-            tile[7].collision = true;
-
-            tile[8] = new Tile();
-            tile[8].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/ladoCentralCasa.png"));
-            tile[8].collision = true;
-
-            tile[9] = new Tile();
-            tile[9].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/ladoIzquierdoCasa.png"));
-            tile[9].collision = true;
-
-            tile[10] = new Tile();
-            tile[10].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/tejaCasa.png"));
-            tile[10].collision = true;
-
-            tile[11] = new Tile();
-            tile[11].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/tejadoAbajoDerecho.png"));
-            tile[11].collision = true;
-
-            tile[12] = new Tile();
-            tile[12].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/tejadoAbajoCentral.png"));
-            tile[12].collision = true;
-
-            tile[13] = new Tile();
-            tile[13].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/tejadoAbajoIzquierda.png"));
-            tile[13].collision = true;
-
-            tile[14] = new Tile();
-            tile[14].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/chimenea.png"));
-            tile[14].collision = true;
-
-            tile[15] = new Tile();
-            tile[15].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/tejadoArribaDerecho.png"));
-            tile[15].collision = true;
-
-            tile[16] = new Tile();
-            tile[16].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/tejadoArribaCentral.png"));
-            tile[16].collision = true;
-
-            tile[17] = new Tile();
-            tile[17].image = ImageIO.read(getClass().getResourceAsStream("/tiles/CasaA/tejadoArribaIzquierdo.png"));
-            tile[17].collision = true;
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            tile[index].collision = collision;
 
         }catch (IOException e){
             e.printStackTrace();
@@ -127,7 +90,7 @@ public class TileManager {
             br.close();
 
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 
@@ -151,7 +114,7 @@ public class TileManager {
                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
             ){
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[tileNum].image, screenX, screenY, null);
             }
 
             worldCol++;

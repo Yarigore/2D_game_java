@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     // SYSTEM
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
     Sound soundE = new Sound();
     public CollisionChecker checker = new CollisionChecker(this);
@@ -39,6 +39,11 @@ public class GamePanel extends JPanel implements Runnable{
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
     public SuperObject obj [] = new SuperObject[10];
+
+    // GAME STATE
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -51,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame(){
         aSetter.setObject();
         playMusic(0);
+        gameState = playState;
     }
 
     public void startGameThread(){
@@ -91,13 +97,24 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        player.update();
+        if (gameState == playState){
+            player.update();
+        }
+        if (gameState == pauseState){
+            // nothing happend
+        }
     }
 
     public void paintComponent(Graphics g){
 
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+
+        // DEBUG
+        long drawStart = 0;
+        if(keyH.checkDrawTime){
+            drawStart = System.nanoTime();
+        }
 
         // TILE
         tileM.draw(g2);
@@ -115,6 +132,13 @@ public class GamePanel extends JPanel implements Runnable{
         // UI
         ui.draw(g2);
 
+        // DEBUG
+        if(keyH.checkDrawTime){
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
+            g2.setColor(Color.red);
+            g2.drawString("Draw Time: " + passed, 10, 400);
+        }
         g2.dispose();
     }
 
