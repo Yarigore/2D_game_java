@@ -69,8 +69,6 @@ public class UI {
 
     public void drawPlayerLife(){
 
-        gp.player.life = 3;
-
         int x = gp.tileSize / 2;
         int y = gp.tileSize / 2;
         int i = 0;
@@ -217,7 +215,7 @@ public class UI {
         x += gp.tileSize;
         y += gp.tileSize;
 
-        for(String line : currentDialogue.split("/n")){
+        for(String line : currentDialogue.split("\n")){
             g2.drawString(line, x, y);
             y += 40;
         }
