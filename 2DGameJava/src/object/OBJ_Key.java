@@ -9,6 +9,6 @@ public class OBJ_Key extends Entity {
         super(gp);
 
         name = "key";
-        down1 = setUp("/objects/llave.png");
+        down1 = setUp("/objects/llave.png", gp.tileSize, gp.tileSize);
     }
 }
