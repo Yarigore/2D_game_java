@@ -2,15 +2,19 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Shield_Tier1;
+import object.OBJ_Weapon_Sword_Tier1;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
 public class Player extends Entity {
     KeyHandler keyH;
-
     public final int screenX;
     public final int screenY;
+    public boolean isAttackCanceled = false;
+
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -39,8 +43,26 @@ public class Player extends Entity {
         direction = "down";
 
         // PLAYER STATUS
+        level = 1;
         maxLife = 6;
         life = maxLife;
+        strength = 1; // THE MORE STRENGTH HE HAS, THE MORE DAMAGE HE GIVES.
+        dexterity = 1; // THE MORE DEXTERITY HE HAS, THE LESS DAMAGE HE RECIVES.
+        exp = 0;
+        nextLevelExp = 5;
+        coin = 0;
+        currentWeapon = new OBJ_Weapon_Sword_Tier1(gp);
+        currentShield = new OBJ_Shield_Tier1(gp);
+        attack = getAttack(); // THE TOTAL ATTACK VALUE IS DECIDED BY STRENGTH AND WEAPON.
+        defense = getDefense(); // THE TOTAL DEFENSE VALUE IS DECIDED BY DEXTERITY AND SHIELD.
+    }
+
+    public int getAttack(){
+        return attack = strength * currentWeapon.attack;
+    }
+
+    public int getDefense(){
+        return defense = dexterity * currentShield.defense;
     }
 
     public void getPlayerImage(){
@@ -114,6 +136,14 @@ public class Player extends Entity {
                     case "right": worldX += speed; break;
                 }
             }
+
+            if (keyH.enterPressed && !isAttackCanceled){
+                gp.playSE(5);
+                isAttacking = true;
+                spriteCounter = 0;
+            }
+
+            isAttackCanceled = false;
             gp.keyH.enterPressed = false;
 
             spriteCounter++;
@@ -194,12 +224,9 @@ public class Player extends Entity {
 
         if (gp.keyH.enterPressed){
             if(index != 999){
+                isAttackCanceled = true;
                 gp.gameState = gp.dialogueState;
                 gp.npc[index].speak();
-            }
-            else {
-                //gp.playSE(3);
-                isAttacking = true;
             }
         }
     }
