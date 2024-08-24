@@ -16,14 +16,14 @@ public class NPC_OldMan extends Entity{
 
     public void getImage(){
 
-        up1 = setUp("/player/walk/tile_00851.png", gp.tileSize, gp.tileSize);
-        up2 = setUp("/player/walk/tile_008512.png", gp.tileSize, gp.tileSize);
-        right1 = setUp("/player/walk/tile_00852.png", gp.tileSize, gp.tileSize);
-        right2 = setUp("/player/walk/tile_008522.png", gp.tileSize, gp.tileSize);
-        left1 = setUp("/player/walk/tile_00853.png", gp.tileSize, gp.tileSize);
-        left2 = setUp("/player/walk/tile_008532.png", gp.tileSize, gp.tileSize);
-        down1 = setUp("/player/walk/tile_00854.png", gp.tileSize, gp.tileSize);
-        down2 = setUp("/player/walk/tile_008542.png", gp.tileSize, gp.tileSize);
+        up1 = setUp("/npc/wizardUp.png", gp.tileSize, gp.tileSize);
+        up2 = setUp("/npc/wizardUp.png", gp.tileSize, gp.tileSize);
+        right1 = setUp("/npc/wizardRight.png", gp.tileSize, gp.tileSize);
+        right2 = setUp("/npc/wizardRight.png", gp.tileSize, gp.tileSize);
+        left1 = setUp("/npc/wizardLeft.png", gp.tileSize, gp.tileSize);
+        left2 = setUp("/npc/wizardLeft.png", gp.tileSize, gp.tileSize);
+        down1 = setUp("/npc/wizardDown.png", gp.tileSize, gp.tileSize);
+        down2 = setUp("/npc/wizardDown.png", gp.tileSize, gp.tileSize);
     }
 
     public void setDialogue(){
