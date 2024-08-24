@@ -198,6 +198,7 @@ public class Player extends Entity {
                 gp.npc[index].speak();
             }
             else {
+                //gp.playSE(3);
                 isAttacking = true;
             }
         }
@@ -207,7 +208,8 @@ public class Player extends Entity {
 
         if (index != 999){
 
-            if (isInvincible == false){
+            if (!isInvincible){
+                gp.playSE(4);
                 life -= 1;
                 isInvincible = true;
             }
@@ -217,11 +219,13 @@ public class Player extends Entity {
     public void damageMonster(int index){
         if (index != 999){
             if (!gp.monster[index].isInvincible){
+                gp.playSE(5);
                 gp.monster[index].life -= 1;
                 gp.monster[index].isInvincible = true;
+                gp.monster[index].damageReaction();
 
                 if (gp.monster[index].life <= 0){
-                    gp.monster[index] = null;
+                    gp.monster[index].isDying = true;
                 }
             }
         }
