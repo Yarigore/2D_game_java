@@ -27,8 +27,23 @@ public class AssetSetter {
     }
 
     public void setMonster(){
-        gp.monster[0] = new MON_Bat(gp);
-        gp.monster[0].worldX = gp.tileSize * 25;
-        gp.monster[0].worldY = gp.tileSize * 25;
+
+        int i = 0;
+        gp.monster[i] = new MON_Bat(gp);
+        gp.monster[i].worldX = gp.tileSize * 25;
+        gp.monster[i].worldY = gp.tileSize * 25;
+        i++;
+        gp.monster[i] = new MON_Bat(gp);
+        gp.monster[i].worldX = gp.tileSize * 26;
+        gp.monster[i].worldY = gp.tileSize * 26;
+        i++;
+        gp.monster[i] = new MON_Bat(gp);
+        gp.monster[i].worldX = gp.tileSize * 27;
+        gp.monster[i].worldY = gp.tileSize * 27;
+        i++;
+        gp.monster[i] = new MON_Bat(gp);
+        gp.monster[i].worldX = gp.tileSize * 28;
+        gp.monster[i].worldY = gp.tileSize * 28;
+
     }
 }

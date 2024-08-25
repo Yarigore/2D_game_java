@@ -19,6 +19,9 @@ public class MON_Bat extends Entity {
         speed = 2;
         maxLife = 4;
         life = maxLife;
+        attack = 2;
+        defense = 0;
+        exp = 2;
 
         solidArea.x = 10;
         solidArea.y = 20;
@@ -69,6 +72,5 @@ public class MON_Bat extends Entity {
     public void damageReaction(){
         actionLockCounter = 0;
         direction = gp.player.direction;
-
     }
 }
