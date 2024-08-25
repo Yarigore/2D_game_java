@@ -10,5 +10,7 @@ public class OBJ_Shield_Tier1 extends Entity {
         name = "Shield Tier 1";
         down1 = setUp("/objects/escudoTier1.png", gp.tileSize, gp.tileSize);
         defenseValue = 1;
+        description = "[" + name +"]\nIt's just a simple\nshield";
+
     }
 }

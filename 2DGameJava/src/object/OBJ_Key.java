@@ -10,5 +10,6 @@ public class OBJ_Key extends Entity {
 
         name = "key";
         down1 = setUp("/objects/llave.png", gp.tileSize, gp.tileSize);
+        description = "[" + name +"]\nIt's used to open\ndoors";
     }
 }

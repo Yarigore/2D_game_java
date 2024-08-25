@@ -10,5 +10,7 @@ public class OBJ_Weapon_Sword_Tier1 extends Entity {
         name = "Sword Tier 1";
         down1 = setUp("/objects/espadaTier1.png", gp.tileSize, gp.tileSize);
         attackValue = 1;
+        description = "[" + name +"]\nIt's just a simple\nsword";
+
     }
 }
