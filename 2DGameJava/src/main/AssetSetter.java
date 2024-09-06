@@ -2,10 +2,7 @@ package main;
 
 import entity.NPC_OldMan;
 import monster.MON_Bat;
-import object.OBJ_Axe;
-import object.OBJ_Door;
-import object.OBJ_Key;
-import object.OBJ_Shield_Tier2;
+import object.*;
 
 public class AssetSetter {
 
@@ -41,6 +38,14 @@ public class AssetSetter {
         gp.obj[i] = new OBJ_Shield_Tier2(gp);
         gp.obj[i].worldX = gp.tileSize * 26;
         gp.obj[i].worldY = gp.tileSize * 27;
+        i++;
+        gp.obj[i] = new OBJ_TinyPotion(gp);
+        gp.obj[i].worldX = gp.tileSize * 27;
+        gp.obj[i].worldY = gp.tileSize * 27;
+        i++;
+        gp.obj[i] = new OBJ_NormalPotion(gp);
+        gp.obj[i].worldX = gp.tileSize * 28;
+        gp.obj[i].worldY = gp.tileSize * 28;
     }
 
     public void setNPC(){

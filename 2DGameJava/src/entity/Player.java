@@ -85,14 +85,26 @@ public class Player extends Entity {
     }
 
     public void getPlayerAttack(){
-        atackUp1 = setUp("/player/attack/upSword1.png", gp.tileSize, gp.tileSize * 2);
-        atackUp2 = setUp("/player/attack/upSword2.png", gp.tileSize, gp.tileSize * 2);
-        atackDown1 = setUp("/player/attack/downSword1.png", gp.tileSize, gp.tileSize * 2);
-        atackDown2 = setUp("/player/attack/downSword2.png", gp.tileSize, gp.tileSize * 2);
-        atackLeft1 = setUp("/player/attack/leftSword1.png", gp.tileSize * 2, gp.tileSize);
-        atackLeft2 = setUp("/player/attack/leftSword2.png", gp.tileSize * 2, gp.tileSize);
-        atackRight1 = setUp("/player/attack/rightSword1.png", gp.tileSize * 2, gp.tileSize);
-        atackRight2 = setUp("/player/attack/rightSword2.png", gp.tileSize * 2, gp.tileSize);
+        if(currentWeapon.type == type_sword){
+            atackUp1 = setUp("/player/attack/upSword1.png", gp.tileSize, gp.tileSize * 2);
+            atackUp2 = setUp("/player/attack/upSword2.png", gp.tileSize, gp.tileSize * 2);
+            atackDown1 = setUp("/player/attack/downSword1.png", gp.tileSize, gp.tileSize * 2);
+            atackDown2 = setUp("/player/attack/downSword2.png", gp.tileSize, gp.tileSize * 2);
+            atackLeft1 = setUp("/player/attack/leftSword1.png", gp.tileSize * 2, gp.tileSize);
+            atackLeft2 = setUp("/player/attack/leftSword2.png", gp.tileSize * 2, gp.tileSize);
+            atackRight1 = setUp("/player/attack/rightSword1.png", gp.tileSize * 2, gp.tileSize);
+            atackRight2 = setUp("/player/attack/rightSword2.png", gp.tileSize * 2, gp.tileSize);
+        }
+        if (currentWeapon.type == type_axe) {
+            atackUp1 = setUp("/player/axeAttack/upAxe1.png", gp.tileSize, gp.tileSize * 2);
+            atackUp2 = setUp("/player/axeAttack/upAxe2.png", gp.tileSize, gp.tileSize * 2);
+            atackDown1 = setUp("/player/axeAttack/downAxe1.png", gp.tileSize, gp.tileSize * 2);
+            atackDown2 = setUp("/player/axeAttack/downAxe2.png", gp.tileSize, gp.tileSize * 2);
+            atackLeft1 = setUp("/player/axeAttack/leftAxe1.png", gp.tileSize * 2, gp.tileSize);
+            atackLeft2 = setUp("/player/axeAttack/leftAxe2.png", gp.tileSize * 2, gp.tileSize);
+            atackRight1 = setUp("/player/axeAttack/rightAxe1.png", gp.tileSize * 2, gp.tileSize);
+            atackRight2 = setUp("/player/axeAttack/rightAxe2.png", gp.tileSize * 2, gp.tileSize);
+        }
     }
 
     public void update(){
@@ -249,7 +261,7 @@ public class Player extends Entity {
 
         if (index != 999){
 
-            if (!isInvincible){
+            if (!isInvincible && !gp.monster[index].isDying){
                 gp.playSE(4);
                 int damage = gp.monster[index].attack - defense;
                 if (damage < 0) damage = 0;
@@ -303,13 +315,17 @@ public class Player extends Entity {
             if (selectedItem.type == type_sword || selectedItem.type == type_axe){
                 currentWeapon = selectedItem;
                 attack = getAttack();
+                getPlayerAttack();
             }
             if (selectedItem.type == type_shield){
                 currentShield = selectedItem;
                 defense = getDefense();
+                getPlayerAttack();
             }
             if (selectedItem.type == type_consumable){
                 // LATER
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
             }
         }
     }

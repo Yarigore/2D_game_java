@@ -95,6 +95,9 @@ public class Entity {
             case "right": direction = "left"; break;
         }
     }
+
+    public void use(Entity entity){}
+
     public void update(){
         setAction();
 
@@ -225,7 +228,6 @@ public class Entity {
         if (dyingCounter > i * 6 && dyingCounter <= i * 7) changeAlpha(g2, 0);
         if (dyingCounter > i * 7 && dyingCounter <= i * 8) changeAlpha(g2, 1);
         if (dyingCounter > i * 8){
-            isDying = false;
             isAlive = false;
         }
     }
