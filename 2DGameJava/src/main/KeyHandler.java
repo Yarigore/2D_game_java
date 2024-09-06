@@ -90,7 +90,7 @@ public class KeyHandler implements KeyListener {
                 if (gp.ui.commandNum == 0){
                     System.out.println("Do some fighter specific stuff!");
                     gp.gameState = gp.playState;
-                    gp.playMusic(0);
+                    // gp.playMusic(0);
                 }
                 else if (gp.ui.commandNum == 1) {
                     System.out.println("Do some thief specific stuff!");
@@ -177,6 +177,9 @@ public class KeyHandler implements KeyListener {
                 gp.ui.slotCol++;
                 gp.playSE(7);
             }
+        }
+        if (code == KeyEvent.VK_ENTER){
+            gp.player.selectItem();
         }
     }
 

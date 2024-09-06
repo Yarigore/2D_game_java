@@ -31,9 +31,6 @@ public class Player extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        attackArea.width = 36;
-        attackArea.height = 36;
-
         setDefaultValues();
         getPlayerImage();
         getPlayerAttack();
@@ -61,7 +58,6 @@ public class Player extends Entity {
         attack = getAttack(); // THE TOTAL ATTACK VALUE IS DECIDED BY STRENGTH AND WEAPON.
         defense = getDefense(); // THE TOTAL DEFENSE VALUE IS DECIDED BY DEXTERITY AND SHIELD.
     }
-
     public void setItems(){
         inventory.add(currentWeapon);
         inventory.add(currentShield);
@@ -69,9 +65,9 @@ public class Player extends Entity {
     }
 
     public int getAttack(){
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackValue;
     }
-
     public int getDefense(){
         return defense = dexterity * currentShield.defenseValue;
     }
@@ -224,13 +220,21 @@ public class Player extends Entity {
             isAttacking = false;
         }
     }
-
     public void pickUpObject(int index){
         if(index != 999){
+            String text;
 
+            if (inventory.size() != maxInventorySize){
+                inventory.add(gp.obj[index]);
+                text = "Got a " + gp.obj[index].name + "!";
+            }
+            else {
+                text = "You cannot carry any more!";
+            }
+            gp.ui.addMessage(text);
+            gp.obj[index] = null;
         }
     }
-
     public void interactNPC(int index){
 
         if (gp.keyH.enterPressed){
@@ -241,7 +245,6 @@ public class Player extends Entity {
             }
         }
     }
-
     public void contactMonster(int index){
 
         if (index != 999){
@@ -255,7 +258,6 @@ public class Player extends Entity {
             }
         }
     }
-
     public void damageMonster(int index){
         if (index != 999){
             if (!gp.monster[index].isInvincible){
@@ -278,7 +280,6 @@ public class Player extends Entity {
             }
         }
     }
-
     public void checkLevelUp(){
         if (exp >= nextLevelExp){
             level++;
@@ -291,6 +292,25 @@ public class Player extends Entity {
             gp.playSE(6);
             gp.gameState = gp.dialogueState;
             gp.ui.currentDialogue = "Level Up!\n Now level " + level;
+        }
+    }
+    public void selectItem(){
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        if (itemIndex < inventory.size()){
+            Entity selectedItem = inventory.get(itemIndex);
+
+            if (selectedItem.type == type_sword || selectedItem.type == type_axe){
+                currentWeapon = selectedItem;
+                attack = getAttack();
+            }
+            if (selectedItem.type == type_shield){
+                currentShield = selectedItem;
+                defense = getDefense();
+            }
+            if (selectedItem.type == type_consumable){
+                // LATER
+            }
         }
     }
 

@@ -2,7 +2,10 @@ package main;
 
 import entity.NPC_OldMan;
 import monster.MON_Bat;
+import object.OBJ_Axe;
 import object.OBJ_Door;
+import object.OBJ_Key;
+import object.OBJ_Shield_Tier2;
 
 public class AssetSetter {
 
@@ -14,16 +17,38 @@ public class AssetSetter {
 
     public void setObject(){
 
-        gp.obj[0] = new OBJ_Door(gp);
-        gp.obj[0].worldX = gp.tileSize * 15;
-        gp.obj[0].worldY = gp.tileSize * 23;
-
+        int i = 0;
+        gp.obj[i] = new OBJ_Door(gp);
+        gp.obj[i].worldX = gp.tileSize * 15;
+        gp.obj[i].worldY = gp.tileSize * 23;
+        i++;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = gp.tileSize * 25;
+        gp.obj[i].worldY = gp.tileSize * 23;
+        i++;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = gp.tileSize * 25;
+        gp.obj[i].worldY = gp.tileSize * 24;
+        i++;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = gp.tileSize * 25;
+        gp.obj[i].worldY = gp.tileSize * 25;
+        i++;
+        gp.obj[i] = new OBJ_Axe(gp);
+        gp.obj[i].worldX = gp.tileSize * 26;
+        gp.obj[i].worldY = gp.tileSize * 26;
+        i++;
+        gp.obj[i] = new OBJ_Shield_Tier2(gp);
+        gp.obj[i].worldX = gp.tileSize * 26;
+        gp.obj[i].worldY = gp.tileSize * 27;
     }
 
     public void setNPC(){
-        gp.npc[0] = new NPC_OldMan(gp);
-        gp.npc[0].worldX = gp.tileSize * 22;
-        gp.npc[0].worldY = gp.tileSize * 21;
+
+        int i = 0;
+        gp.npc[i] = new NPC_OldMan(gp);
+        gp.npc[i].worldX = gp.tileSize * 22;
+        gp.npc[i].worldY = gp.tileSize * 21;
     }
 
     public void setMonster(){
