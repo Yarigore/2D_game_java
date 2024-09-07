@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Arrow;
 import object.OBJ_Key;
 import object.OBJ_Shield_Tier1;
 import object.OBJ_Weapon_Sword_Tier1;
@@ -55,6 +56,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Weapon_Sword_Tier1(gp);
         currentShield = new OBJ_Shield_Tier1(gp);
+        proyectile = new OBJ_Arrow(gp);
         attack = getAttack(); // THE TOTAL ATTACK VALUE IS DECIDED BY STRENGTH AND WEAPON.
         defense = getDefense(); // THE TOTAL DEFENSE VALUE IS DECIDED BY DEXTERITY AND SHIELD.
     }
@@ -83,7 +85,6 @@ public class Player extends Entity {
         down1 = setUp("/player/walk/tile_00854.png", gp.tileSize, gp.tileSize);
         down2 = setUp("/player/walk/tile_008542.png", gp.tileSize, gp.tileSize);
     }
-
     public void getPlayerAttack(){
         if(currentWeapon.type == type_sword){
             atackUp1 = setUp("/player/attack/upSword1.png", gp.tileSize, gp.tileSize * 2);
@@ -106,7 +107,6 @@ public class Player extends Entity {
             atackRight2 = setUp("/player/axeAttack/rightAxe2.png", gp.tileSize * 2, gp.tileSize);
         }
     }
-
     public void update(){
 
         if (isAttacking){
@@ -178,6 +178,16 @@ public class Player extends Entity {
             }
         }
 
+        if (gp.keyH.shotKeyPressed == true && !proyectile.isAlive && shotAvailableCounter == 30){
+
+            // SET DEFAULT COORDINATES, DIRECTION AND USER
+            proyectile.set(worldX, worldY, direction, true, this);
+
+            // ADD IT TO THE LIST
+            gp.projectileList.add(proyectile);
+            shotAvailableCounter = 0;
+        }
+
         // THIS NEEDS TO BE OUTSIDE OF KEY IF STATEMENT!
         if (isInvincible){
             invincibleCounter++;
@@ -186,8 +196,11 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
-    }
 
+        if (shotAvailableCounter < 30){
+            shotAvailableCounter++;
+        }
+    }
     public void attacking(){
         spriteCounter++;
 
@@ -217,7 +230,7 @@ public class Player extends Entity {
 
             // CHECK MONSTER COLLISION WITH THE UPDATE WORLDX/Y AND SOLIDAREA
             int monsterIndex = gp.checker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, attack);
 
             // AFTER CHECKING COLLISION, RESTORE THE ORIGINAL DATA
             worldX = currentWorldX;
@@ -270,7 +283,7 @@ public class Player extends Entity {
             }
         }
     }
-    public void damageMonster(int index){
+    public void damageMonster(int index, int attack){
         if (index != 999){
             if (!gp.monster[index].isInvincible){
                 gp.playSE(5);
@@ -329,7 +342,6 @@ public class Player extends Entity {
             }
         }
     }
-
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
