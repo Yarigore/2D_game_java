@@ -2,10 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Arrow;
-import object.OBJ_Key;
-import object.OBJ_Shield_Tier1;
-import object.OBJ_Weapon_Sword_Tier1;
+import object.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -49,6 +46,9 @@ public class Player extends Entity {
         level = 1;
         maxLife = 6;
         life = maxLife;
+        maxMana = 4;
+        mana = maxMana;
+        ammo = 10;
         strength = 1; // THE MORE STRENGTH HE HAS, THE MORE DAMAGE HE GIVES.
         dexterity = 1; // THE MORE DEXTERITY HE HAS, THE LESS DAMAGE HE RECIVES.
         exp = 0;
@@ -56,7 +56,8 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Weapon_Sword_Tier1(gp);
         currentShield = new OBJ_Shield_Tier1(gp);
-        proyectile = new OBJ_Arrow(gp);
+        projectile = new OBJ_Arrow(gp);
+        //projectile = new OBJ_BatProjectile(gp);
         attack = getAttack(); // THE TOTAL ATTACK VALUE IS DECIDED BY STRENGTH AND WEAPON.
         defense = getDefense(); // THE TOTAL DEFENSE VALUE IS DECIDED BY DEXTERITY AND SHIELD.
     }
@@ -178,13 +179,17 @@ public class Player extends Entity {
             }
         }
 
-        if (gp.keyH.shotKeyPressed == true && !proyectile.isAlive && shotAvailableCounter == 30){
+        if (gp.keyH.shotKeyPressed == true && !projectile.isAlive
+                && shotAvailableCounter == 30 && projectile.haveResource(this) == true){
 
             // SET DEFAULT COORDINATES, DIRECTION AND USER
-            proyectile.set(worldX, worldY, direction, true, this);
+            projectile.set(worldX, worldY, direction, true, this);
+
+            // SUBTRACT THE COST (MANA, AMMO, ETC.)
+            projectile.subtractResource(this);
 
             // ADD IT TO THE LIST
-            gp.projectileList.add(proyectile);
+            gp.projectileList.add(projectile);
             shotAvailableCounter = 0;
         }
 

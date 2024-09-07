@@ -2,11 +2,11 @@ package entity;
 
 import main.GamePanel;
 
-public class Proyectile extends Entity{
+public class Projectile extends Entity{
 
     Entity user;
 
-    public Proyectile(GamePanel gp) {
+    public Projectile(GamePanel gp) {
         super(gp);
     }
 
@@ -30,7 +30,11 @@ public class Proyectile extends Entity{
             }
         }
         if (user != gp.player){
-
+            boolean contactPlayer = gp.checker.checkPlayer(this);
+            if (!gp.player.isInvincible && contactPlayer == true){
+                damagePlayer(attack);
+                isAlive = false;
+            }
         }
 
         switch (direction){
@@ -57,4 +61,10 @@ public class Proyectile extends Entity{
         }
 
     }
+
+    public boolean haveResource(Entity user){
+        boolean haveResource = false;
+        return haveResource;
+    }
+    public void subtractResource(Entity user){}
 }

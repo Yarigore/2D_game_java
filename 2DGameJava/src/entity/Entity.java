@@ -47,6 +47,7 @@ public class Entity {
     public int life;
     public int maxMana;
     public int mana;
+    public int ammo;
     public int level;
     public int strength;
     public int dexterity;
@@ -57,7 +58,7 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
-    public Proyectile proyectile;
+    public Projectile projectile;
 
     // ITEM ATTRIBUTES
     public int attackValue;
@@ -102,7 +103,6 @@ public class Entity {
     }
 
     public void use(Entity entity){}
-
     public void update(){
         setAction();
 
@@ -114,13 +114,7 @@ public class Entity {
         boolean contactPlayer = gp.checker.checkPlayer(this);
 
         if (this.type == type_monster && contactPlayer == true){
-            if (!gp.player.isInvincible){
-                gp.playSE(4);
-                int damage = attack - gp.player.defense;
-                if (damage < 0) damage = 0;
-                gp.player.life -= damage;
-                gp.player.isInvincible = true;
-            }
+            damagePlayer(attack);
         }
 
         // IF COLLISION IS FALSE, ENTITY CAN MOVE
@@ -152,8 +146,21 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
-    }
 
+        if (shotAvailableCounter < 30){
+            shotAvailableCounter++;
+        }
+    }
+    public void damagePlayer(int attack){
+
+        if (!gp.player.isInvincible){
+            gp.playSE(4);
+            int damage = attack - gp.player.defense;
+            if (damage < 0) damage = 0;
+            gp.player.life -= damage;
+            gp.player.isInvincible = true;
+        }
+    }
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
@@ -218,7 +225,6 @@ public class Entity {
             changeAlpha(g2, 1f);
         }
     }
-
     public void dyingAnimation(Graphics2D g2){
 
         int i = 5;
@@ -236,11 +242,9 @@ public class Entity {
             isAlive = false;
         }
     }
-
     public void changeAlpha(Graphics2D g2, float alpha){
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     }
-
     public BufferedImage setUp(String imagePath, int width, int height){
 
         UtilityTool uTool = new UtilityTool();

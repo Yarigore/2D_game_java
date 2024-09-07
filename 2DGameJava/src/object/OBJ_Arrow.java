@@ -1,9 +1,10 @@
 package object;
 
-import entity.Proyectile;
+import entity.Entity;
+import entity.Projectile;
 import main.GamePanel;
 
-public class OBJ_Arrow extends Proyectile {
+public class OBJ_Arrow extends Projectile {
 
     GamePanel gp;
 
@@ -12,7 +13,7 @@ public class OBJ_Arrow extends Proyectile {
         this.gp = gp;
 
         name = "Arrow";
-        speed = 5;
+        speed = 10;
         maxLife = 80;
         life = maxLife;
         attack = 2;
@@ -30,5 +31,17 @@ public class OBJ_Arrow extends Proyectile {
         left2 = setUp("/objects/arrow/arrowLeft.png", gp.tileSize, gp.tileSize);
         right1 = setUp("/objects/arrow/arrowRight.png", gp.tileSize, gp.tileSize);
         right2 = setUp("/objects/arrow/arrowRight.png", gp.tileSize, gp.tileSize);
+    }
+
+    public boolean haveResource(Entity user){
+        boolean haveResource = false;
+        if (user.ammo >= useCost){
+            haveResource = true;
+        }
+        return haveResource;
+    }
+
+    public void subtractResource(Entity user){
+        user.ammo -= useCost;
     }
 }

@@ -2,6 +2,7 @@ package monster;
 
 import entity.Entity;
 import main.GamePanel;
+import object.OBJ_BatProjectile;
 
 import java.util.Random;
 
@@ -22,6 +23,7 @@ public class MON_Bat extends Entity {
         attack = 2;
         defense = 0;
         exp = 2;
+        projectile = new OBJ_BatProjectile(gp);
 
         solidArea.x = 10;
         solidArea.y = 20;
@@ -66,6 +68,12 @@ public class MON_Bat extends Entity {
             }
 
             actionLockCounter = 0;
+        }
+        int randomProyectile = new Random().nextInt(100) + 1;
+        if (randomProyectile > 99 && !projectile.isAlive && shotAvailableCounter == 30){
+            projectile.set(worldX, worldY, direction, true, this);
+            gp.projectileList.add(projectile);
+            shotAvailableCounter = 0;
         }
     }
 
