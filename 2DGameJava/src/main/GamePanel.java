@@ -3,6 +3,7 @@ package main;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
+import tile_interactive.InteractiveTile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,10 +43,12 @@ public class GamePanel extends JPanel implements Runnable{
 
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
-    public Entity obj [] = new Entity[10];
-    public Entity npc[] = new Entity[10];
-    public Entity monster[] = new Entity[20];
+    public Entity[] obj = new Entity[50];
+    public Entity[] npc = new Entity[50];
+    public Entity[] monster = new Entity[50];
+    public InteractiveTile[] iTile = new InteractiveTile[50];
     public ArrayList<Entity> projectileList = new ArrayList<>();
+    public ArrayList<Entity> particleList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
     // GAME STATE
@@ -68,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable{
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
+        aSetter.setInteractiveTile();
         gameState = titleState;
     }
 
@@ -107,7 +111,6 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-
     public void update(){
         if (gameState == playState){
             // PLAYER
@@ -126,6 +129,7 @@ public class GamePanel extends JPanel implements Runnable{
                         monster[i].update();
                     }
                     if (!monster[i].isAlive){
+                        monster[i].checkDrop();
                         monster[i] = null;
                     }
                 }
@@ -141,12 +145,27 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                 }
             }
+            for (int i = 0; i < particleList.size(); i++){
+                if(particleList.get(i) != null){
+                    if (particleList.get(i).isAlive){
+                        particleList.get(i).update();
+                    }
+                    if (!particleList.get(i).isAlive){
+                        particleList.remove(i);
+                    }
+                }
+            }
+
+            for (InteractiveTile interactiveTile : iTile) {
+                if (interactiveTile != null) {
+                    interactiveTile.update();
+                }
+            }
         }
         if (gameState == pauseState){
             // nothing happend
         }
     }
-
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -167,6 +186,13 @@ public class GamePanel extends JPanel implements Runnable{
 
             // TILE
             tileM.draw(g2);
+
+            // INTERACTIVE TILE
+            for (int i = 0; i < iTile.length; i++){
+                if (iTile[i] != null){
+                    iTile[i].draw(g2);
+                }
+            }
 
             // ADD ESTITIES TO THE LIST
             entityList.add(player);
@@ -192,6 +218,11 @@ public class GamePanel extends JPanel implements Runnable{
             for (int i = 0; i < projectileList.size(); i++){
                 if (projectileList.get(i) != null){
                     entityList.add(projectileList.get(i));
+                }
+            }
+            for (int i = 0; i < particleList.size(); i++){
+                if (particleList.get(i) != null){
+                    entityList.add(particleList.get(i));
                 }
             }
 
@@ -235,17 +266,14 @@ public class GamePanel extends JPanel implements Runnable{
             g2.dispose();
         }
     }
-
     public void playMusic(int i){
         music.setFile(i);
         music.play();
         music.loop();
     }
-
     public void stopMusic(){
         music.stop();
     }
-
     public void playSE(int i){
         soundE.setFile(i);
         soundE.play();

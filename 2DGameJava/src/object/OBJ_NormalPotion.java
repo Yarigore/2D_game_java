@@ -6,8 +6,6 @@ import main.GamePanel;
 public class OBJ_NormalPotion extends Entity {
 
     GamePanel gp;
-    int value = 2;
-
     public OBJ_NormalPotion(GamePanel gp) {
         super(gp);
 
@@ -15,6 +13,7 @@ public class OBJ_NormalPotion extends Entity {
 
         type = type_consumable;
         name = "Red normal potion";
+        value = 2;
         down1 = setUp("/objects/pocionGrandeVida.png", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nHeals your life by " + value + ".";
     }
@@ -24,9 +23,6 @@ public class OBJ_NormalPotion extends Entity {
         gp.ui.currentDialogue = "You drink the " + name + "!\n" +
                 "Your life has been recovered by " + value + ".";
         entity.life += value;
-        if (gp.player.life > gp.player.maxLife){
-            gp.player.life = gp.player.maxLife;
-        }
         gp.playSE(2);
     }
 }

@@ -144,6 +144,9 @@ public class Player extends Entity {
             int monsterIndex = gp.checker.checkEntity(this, gp.monster);
             contactMonster(monsterIndex);
 
+            // CHECK INTERACTIVE TILE COLLISION
+            int iTileIndex = gp.checker.checkEntity(this, gp.iTile);
+
             // CHECK EVENT
             gp.eHandler.checkEvent();
 
@@ -205,6 +208,12 @@ public class Player extends Entity {
         if (shotAvailableCounter < 30){
             shotAvailableCounter++;
         }
+        if (life > maxLife){
+            life = maxLife;
+        }
+        if (mana > maxMana){
+            mana = maxMana;
+        }
     }
     public void attacking(){
         spriteCounter++;
@@ -237,6 +246,10 @@ public class Player extends Entity {
             int monsterIndex = gp.checker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex, attack);
 
+            // CHECK ATTACK COLLISION
+            int iTileIndex = gp.checker.checkEntity(this, gp.iTile);
+            damageInteractiveTile(iTileIndex);
+
             // AFTER CHECKING COLLISION, RESTORE THE ORIGINAL DATA
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -252,17 +265,29 @@ public class Player extends Entity {
     }
     public void pickUpObject(int index){
         if(index != 999){
-            String text;
 
-            if (inventory.size() != maxInventorySize){
-                inventory.add(gp.obj[index]);
-                text = "Got a " + gp.obj[index].name + "!";
+            // PICKUP ONLY ITEMS
+            if (gp.obj[index].type == type_pickupOnly){
+
+                gp.obj[index].use(this);
+                gp.obj[index] = null;
+
             }
+            // INVENTORY ITEMS
             else {
-                text = "You cannot carry any more!";
+
+                String text;
+
+                if (inventory.size() != maxInventorySize){
+                    inventory.add(gp.obj[index]);
+                    text = "Got a " + gp.obj[index].name + "!";
+                }
+                else {
+                    text = "You cannot carry any more!";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[index] = null;
             }
-            gp.ui.addMessage(text);
-            gp.obj[index] = null;
         }
     }
     public void interactNPC(int index){
@@ -307,6 +332,22 @@ public class Player extends Entity {
 
                     checkLevelUp();
                 }
+            }
+        }
+    }
+    public void damageInteractiveTile(int index){
+
+        if (index != 999 && gp.iTile[index].isDestructible &&
+                gp.iTile[index].isCorrectItem(this) && !gp.iTile[index].isInvincible){
+            gp.iTile[index].playSE();
+            gp.iTile[index].life--;
+            gp.iTile[index].isInvincible = true;
+
+            // GENERATED PARTICLE
+            generateParticle(gp.iTile[index], gp.iTile[index]);
+
+            if (gp.iTile[index].life == 0){
+                gp.iTile[index] = gp.iTile[index].getDestroyedFrom();
             }
         }
     }
